@@ -1,4 +1,3 @@
-using Filmovita.Models; 
 using Microsoft.EntityFrameworkCore;
 
 namespace Filmovita;

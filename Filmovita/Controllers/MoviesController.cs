@@ -14,7 +14,8 @@ namespace Filmovita.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpGet]
+
+            [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
             if (_dbContext.Movies == null)

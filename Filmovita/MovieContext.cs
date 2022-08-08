@@ -9,6 +9,7 @@ namespace Filmovita
         {
         }
 
-        DbSet<Movie> Movies { get; set; } = null!;
+       public DbSet<Movie> Movies { get; set; } = null!;
     }
+
 }
