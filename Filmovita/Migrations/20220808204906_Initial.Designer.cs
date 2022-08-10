@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Filmovita.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20220808194547_Initial")]
+    [Migration("20220808204906_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
