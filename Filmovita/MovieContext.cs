@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Filmovita.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Filmovita
 {
@@ -9,8 +10,8 @@ namespace Filmovita
         {
         }
 
-       public DbSet<Movie> Movies { get; set; } 
-
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<MovieInfo> MovieInfo { get; set; }
     }
 
 }

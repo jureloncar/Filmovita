@@ -16,8 +16,8 @@ namespace Filmovita.Controllers
             _dbContext = dbContext;
         }
 
-
         [HttpGet]
+        [Route("GetMovies")]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
             if (_dbContext.Movies == null)
@@ -99,6 +99,17 @@ namespace Filmovita.Controllers
             await _dbContext.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet]
+        [Route("GetMovies2")]
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies2()
+        {
+            if (_dbContext.Movies == null)
+            {
+                return NotFound();
+            }
+            return await _dbContext.Movies.ToListAsync();
         }
 
         private bool MovieExists(long id)
