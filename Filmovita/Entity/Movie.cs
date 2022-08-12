@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Filmovita.Entity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Filmovita
@@ -11,6 +12,8 @@ namespace Filmovita
         public string? Title { get; set; }
         public string? Genre { get; set; }
         public DateTime ReleaseDate { get; set; }
+        public Review? Review { get; set; }
+
 
     }
 }

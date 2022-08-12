@@ -3,11 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Filmovita.Entity
 {
-    public class MovieInfo
+    public class Review
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ReviewId { get; set; }
-        public string Review { get; set; }
+        public string? Reviews { get; set; }
+        public ICollection<Movie>? Movies { get; set; }
     }
 }

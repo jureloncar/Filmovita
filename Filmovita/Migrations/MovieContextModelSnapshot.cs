@@ -22,7 +22,7 @@ namespace Filmovita.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Filmovita.Entity.MovieInfo", b =>
+            modelBuilder.Entity("Filmovita.Entity.Review", b =>
                 {
                     b.Property<int>("ReviewId")
                         .ValueGeneratedOnAdd()
@@ -30,13 +30,12 @@ namespace Filmovita.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"), 1L, 1);
 
-                    b.Property<string>("Review")
-                        .IsRequired()
+                    b.Property<string>("Reviews")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ReviewId");
 
-                    b.ToTable("MovieInfo");
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Filmovita.Movie", b =>
@@ -53,12 +52,31 @@ namespace Filmovita.Migrations
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("ReviewId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ReviewId");
+
                     b.ToTable("Movies");
+                });
+
+            modelBuilder.Entity("Filmovita.Movie", b =>
+                {
+                    b.HasOne("Filmovita.Entity.Review", "Review")
+                        .WithMany("Movies")
+                        .HasForeignKey("ReviewId");
+
+                    b.Navigation("Review");
+                });
+
+            modelBuilder.Entity("Filmovita.Entity.Review", b =>
+                {
+                    b.Navigation("Movies");
                 });
 #pragma warning restore 612, 618
         }
