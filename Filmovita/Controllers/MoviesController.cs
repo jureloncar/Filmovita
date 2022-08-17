@@ -9,7 +9,6 @@ namespace Filmovita.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly MovieContext _dbContext;
-        private object id;
 
         public MoviesController(MovieContext dbContext)
         {
@@ -17,7 +16,6 @@ namespace Filmovita.Controllers
         }
 
         [HttpGet]
-        [Route("GetMovies")]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
             if (_dbContext.Movies == null)
@@ -30,18 +28,14 @@ namespace Filmovita.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Movie>> GetMovie(int id)
         {
-            if (_dbContext.Movies == null)
-            {
-                return NotFound();
-            }
-            var movie = await _dbContext.Movies.FindAsync(id);
+            var movie = await _dbContext.Movies.FirstOrDefaultAsync(x => x.Id == id);
 
             if (movie == null)
             {
                 return NotFound();
             }
 
-            return movie;
+            return Ok(movie);
         }
 
         [HttpPost]
@@ -57,7 +51,7 @@ namespace Filmovita.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMovie(int id, Movie movie)
         {
-            if(id != movie.Id)
+            if (id != movie.Id)
             {
                 return BadRequest();
             }
@@ -85,31 +79,17 @@ namespace Filmovita.Controllers
 
         public async Task<IActionResult> DeleteMovie(int id)
         {
-            if (_dbContext.Movies == null)
-            {
-                return NotFound();
-            }
+            var movie = await _dbContext.Movies.FirstOrDefaultAsync(x => x.Id == id);
 
-            var movie = await _dbContext.Movies.FindAsync(id);
             if (movie == null)
             {
                 return NotFound();
             }
+
             _dbContext.Movies.Remove(movie);
             await _dbContext.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        [HttpGet]
-        [Route("GetMovies2")]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies2()
-        {
-            if (_dbContext.Movies == null)
-            {
-                return NotFound();
-            }
-            return await _dbContext.Movies.ToListAsync();
         }
 
         private bool MovieExists(long id)
