@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Filmovita.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,7 +29,8 @@ namespace Filmovita.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Movie>> GetMovie(int id)
         {
-            var movie = await _dbContext.Movies.FirstOrDefaultAsync(x => x.Id == id);
+            var movie = await _dbContext.Movies.Include(x => x.Reviews)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (movie == null)
             {
@@ -39,12 +41,13 @@ namespace Filmovita.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Movie>> PostMovie(Movie movie)
+        public async Task<ActionResult<Movie>> PostMovie(PostMovie movie)
         {
-            _dbContext.Movies.Add(movie);
+            var mappedMovie = Map(movie);
+            _dbContext.Movies.Add(mappedMovie);
             await _dbContext.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetMovie), new { id = movie.Id }, movie);
+            return CreatedAtAction(nameof(GetMovie), new { id = mappedMovie.Id }, mappedMovie);
 
         }
 
@@ -95,6 +98,16 @@ namespace Filmovita.Controllers
         private bool MovieExists(long id)
         {
             return (_dbContext.Movies?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        private Movie Map(PostMovie movie)
+        {
+            return new Movie
+            {
+                Title = movie.MovieName,
+                Genre = movie.Genre,
+                ReleaseDate = movie.ReleaseDate
+            };
         }
     }
 }
